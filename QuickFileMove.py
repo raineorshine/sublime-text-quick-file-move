@@ -7,6 +7,7 @@ import os
 import shutil
 import sublime
 import sublime_plugin
+import subprocess
 
 
 class QuickFileMoveCommand(sublime_plugin.WindowCommand):
@@ -14,7 +15,8 @@ class QuickFileMoveCommand(sublime_plugin.WindowCommand):
     def run(self):
         view = self.window.active_view()
         filename = view.file_name()
-        self.window.show_input_panel("Move/Rename:", filename, lambda user_input: self.rename(view, filename, user_input), None, None)
+        if filename != None:
+            self.window.show_input_panel("Move/Rename:", filename, lambda user_input: self.rename(view, filename, user_input), None, None)
 
     def rename(self, view, old_filename, new_filename):
         if not self.validateFileName(view, old_filename, new_filename):
@@ -42,7 +44,13 @@ class QuickFileMoveCommand(sublime_plugin.WindowCommand):
 
     def fileOperations(self, window, old_file, new_file):
         try:
-            shutil.move(old_file, new_file)
+            # if file is in a git repo, use "git mv" instead of shutil.move
+            old_dir = os.path.dirname(old_file)
+            is_git = subprocess.call(["git", "status"], cwd=old_dir) == 0
+            if is_git:
+                subprocess.call(["git", "mv", old_file, new_file], cwd=old_dir)
+            else:
+                shutil.move(old_file, new_file)
         except IOError as e:
             if e.errno == 2:  # No such file or directory (on new_file)
                 new_dir = os.path.dirname(new_file)

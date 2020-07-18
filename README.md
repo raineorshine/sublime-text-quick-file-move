@@ -1,6 +1,8 @@
-#Sublime Text 2 Quick File Move
+# Sublime Text 2 Quick File Move
 
-A simple ST2 plugin to help you move or rename your files
+A simple ST2 plugin to help you move or rename your files.
+
+If the file is in a git repo, uses `git mv` instead of the os `mv` command.
 
 ### If you want more functions, try [SideBarEnhancements](https://github.com/titoBouzout/SideBarEnhancements):
 
@@ -11,16 +13,16 @@ You can put it in your User Key Bindings file like so:
 
 SideBarEnhancements also supplies you with a lot of other useful things.
 
-###Usage
+### Usage
 
 Press `ctrl+shift+r` then enter your new file path or filename!
 
-###Configuring
+### Configuring
 
 Add `{ "keys": ["ctrl+shift+r"], "command": "quick_file_move" }` to your user keybindings file and change
 the keymap to whatever you prefer.
 
-###Code
+### Code
 
 The code is available on [GitHub](https://github.com/wulftone/sublime-text-2-quick-file-move)!
 
